@@ -4,11 +4,75 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <title>Link to role</title>
 </head>
 <body>
     <h1>Link to role</h1>
+    <div id="step1">
+        <button type="button" onclick="getRoles()" id="start_button">Start here</button>
+    </div>
+    <div id="step2" style="display: none;">
+        <div id="radio_container">
+
+        </div>
+        <button type="button" onclick="generateLink()" id="generate_button" disabled>Get the link!</button>
+
+    </div>
+    <div id="step3" style="display: none;">
+        <h2>Congrats, here is your link:</h2>
+        <input type="text" id="link_input" readonly size="100">
+        <h3>And here is link with delete button</h3>
+        <input type="text" id="del_input"  readonly size="100">
+    </div>
+
 </body>
+
+<script>
+    const submission = {}
+    let guildId = ""
+    const startButton = document.getElementById("start_button")
+
+    async function messageProcessor(event) {
+        if(event.data.type === "roles") {
+            guildId = event.data.guild;
+            document.getElementById("step1").style.display = "none";
+            document.getElementById("step2").style.display = "block";
+            let html = ""
+            for (const r of event.data.roles) {
+                if(r.managed) continue;
+                html += `
+<div>
+  <input type="radio" id="role${r.id}" name="role" value="${r.id}" onchange="generate_button.disabled = false">
+  <label for="role${r.id}" style="color: #${r.color.toString(16).padStart(6, '0')}">${r.name}</label>
+</div>`
+            }
+            document.getElementById('radio_container').innerHTML = html;
+        }
+    }
+    window.addEventListener('message', messageProcessor)
+
+    async function generateLink() {
+        const btn = document.getElementById('generate_button')
+        btn.disabled = true
+        btn.innerText = "..."
+        btn.onclick = null
+        
+        const roleId = [...document.getElementsByName('role')].find(e=>e.checked).value
+        const response = await fetch("https://link2role.svoka.com/api/generate-link?" + new URLSearchParams({role:roleId, guild:guildId}).toString());
+        const data = await response.json()
+        
+        document.getElementById("step2").style.display = "none";
+        document.getElementById("step3").style.display = "block";
+        document.getElementById("link_input").value = `https://link2role.svoka.com/role/?link=${data.link}`;
+        document.getElementById("del_input").value = `https://link2role.svoka.com/delete/?link=${data.link}&del=${data.del}`;
+    }
+    function getRoles() {
+        startButton.disabled = true
+        startButton.innerText = '...'
+        window.open("https://discord.com/api/oauth2/authorize?client_id=810171492032708629&permissions=268435457&redirect_uri=https://link2role.svoka.com/api/discord-admin&scope=bot&response_type=code", "Login with Discord", 'toolbar=no, menubar=no, width=450, height=780')
+    }
+    </script>
+
 </html>
