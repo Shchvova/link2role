@@ -7,10 +7,48 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <title>Link to role</title>
+    <style>
+        h1 {
+            font-family: Pacifico, sans-serif;
+            font-size: 4em;
+            color: #3eb5f1;
+            margin: 0;
+        }
+
+        h2 {
+            font-weight: 300;
+            font-family: sans-serif;
+        }
+
+        .centered {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        button {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: 1px solid gray;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+    </style>
 </head>
 <body>
+<div class="centered">
     <h1>Link to role</h1>
     <div id="step1">
+        <h2>Easy way to grant role to Discord users</h2>
         <button type="button" onclick="getRoles()" id="start_button">Start here</button>
     </div>
     <div id="step2" style="display: none;">
@@ -37,7 +75,8 @@
             <img src="https://i.imgur.com/jbd779z.gif" alt=Role rearrange instructions">
         </div>
     </div>
-
+    <h4>This site does not store your data except that which is necessary to perform its function. If something goes wrong, refresh the page to start over.</h4>
+</div>
 </body>
 
 <script>
