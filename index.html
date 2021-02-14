@@ -24,6 +24,7 @@
         <h2>Congrats, here is your link:</h2>
         <input type="text" id="link_input" readonly size="100">
         <h3>And here is link with delete button</h3>
+        <p>Save this link somewhere. This will allow you to delete the link when you decide it is time for it to stop</p>
         <input type="text" id="del_input"  readonly size="100">
         <div id="rearrange" style="display: none;">
             <h2>One more thing</h2>
@@ -75,7 +76,7 @@
         
         document.getElementById("step2").style.display = "none";
         document.getElementById("step3").style.display = "block";
-        document.getElementById("link_input").value = `https://link2role.svoka.com/role/?link=${data.link}`;
+        document.getElementById("link_input").value = `https://link2role.svoka.com/role/${data.link}`;
         document.getElementById("del_input").value = `https://link2role.svoka.com/delete/?link=${data.link}&del=${data.del}`;
         if(botRolePosition < selectedRolePosition) {
             document.getElementById("rearrange").style.display = "block";
