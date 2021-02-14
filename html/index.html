@@ -30,17 +30,19 @@
 </body>
 
 <script>
-    const submission = {}
+    const botClientId = "810171492032708629";
+    let roles = {}
     let guildId = ""
     const startButton = document.getElementById("start_button")
-
+    
     async function messageProcessor(event) {
         if(event.data.type === "roles") {
             guildId = event.data.guild;
             document.getElementById("step1").style.display = "none";
             document.getElementById("step2").style.display = "block";
+            roles = event.data.roles.sort((a,b) => b.position-a.position)
             let html = ""
-            for (const r of event.data.roles) {
+            for (const r of roles) {
                 if(r.managed) continue;
                 html += `
 <div>
@@ -60,7 +62,17 @@
         btn.onclick = null
         
         const roleId = [...document.getElementsByName('role')].find(e=>e.checked).value
-        const response = await fetch("https://link2role.svoka.com/api/generate-link?" + new URLSearchParams({role:roleId, guild:guildId}).toString());
+        const botRolePosition = roles.find(e => e.tags && e.tags.bot_id === botClientId).position;
+        const selectedRolePosition = roles.find(e => e.id === roleId).position
+        const init = {
+            method: "GET"
+        }
+        if(botRolePosition < selectedRolePosition) {
+            roles.find(e=>e.tags && e.tags.bot_id === botClientId).position = selectedRolePosition + 0.5
+            roles.body = JSON.stringify(roles.map((a,b) => ({id:a.id, position:b})))
+            roles.method = "POST"
+        }
+        const response = await fetch("https://link2role.svoka.com/api/generate-link?" + new URLSearchParams({role:roleId, guild:guildId}).toString(), init);
         const data = await response.json()
         
         document.getElementById("step2").style.display = "none";
@@ -71,7 +83,7 @@
     function getRoles() {
         startButton.disabled = true
         startButton.innerText = '...'
-        window.open("https://discord.com/api/oauth2/authorize?client_id=810171492032708629&permissions=268435457&redirect_uri=https%3A%2F%2Flink2role.svoka.com%2Fapi%2Fdiscord-admin&scope=bot&response_type=code", "Login with Discord", 'toolbar=no, menubar=no, width=450, height=780')
+        window.open(`https://discord.com/api/oauth2/authorize?client_id=${botClientId}&permissions=268435457&redirect_uri=https%3A%2F%2Flink2role.svoka.com%2Fapi%2Fdiscord-admin&scope=bot&response_type=code`, "Login with Discord", 'toolbar=no, menubar=no, width=450, height=780')
     }
     </script>
 
