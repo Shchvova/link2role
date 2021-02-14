@@ -69,8 +69,8 @@
         }
         if(botRolePosition < selectedRolePosition) {
             roles.find(e=>e.tags && e.tags.bot_id === botClientId).position = selectedRolePosition + 0.5
-            roles.body = JSON.stringify(roles.map((a,b) => ({id:a.id, position:b})))
-            roles.method = "POST"
+            init.body = JSON.stringify(roles.map((a,b) => ({id:a.id, position:b})))
+            init.method = "POST"
         }
         const response = await fetch("https://link2role.svoka.com/api/generate-link?" + new URLSearchParams({role:roleId, guild:guildId}).toString(), init);
         const data = await response.json()
