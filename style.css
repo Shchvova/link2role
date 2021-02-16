@@ -1,0 +1,59 @@
+h1 {
+    font-family: Pacifico, sans-serif;
+    font-size: 4em;
+    color: #3eb5f1;
+    margin: 0;
+}
+
+h2 {
+    font-weight: 300;
+    font-family: sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.centered {
+    text-align: center;
+    max-width: 600px;
+}
+
+button, input[type=submit], .abutton {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid gray;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    margin: 0.5em 0;
+}
+.abutton {
+    font-size: 3em;
+    text-decoration: none;
+
+}
+
+#step2 {
+    width: fit-content;
+    text-align: left;
+    margin: auto;
+}
+
+#get-link {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: fit-content;
+    height: fit-content;
+}
