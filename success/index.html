@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <title>Get Your Role</title>
+    <link rel="stylesheet" href="/style.css">
+
+    
+    <meta name="description" content="Link2Role: Claim your Discord role">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Link2Role">
+    <meta property="og:description" content="Link2Role: Claim your Discord role">
+    <meta property="og:image" content="https://link2role.svoka.com/favicon-32x32.png">
+  
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Link2Role">
+    <meta name="twitter:description" content="Claim your Discord role">
+    <meta name="twitter:image" content="https://link2role.svoka.com/favicon-32x32.png">
+</head>
+<body>
+    <div class=".centered">
+        <h1>Great Success 🥳</h1>
+        <a href="#" id="server-link" class="abutton" style="display: none;">Go to the Server</a>
+    </div>
+</body>
+
+<script>
+    const url = new URL(window.location);
+    let state = url.searchParams.get('invite');
+    if(state === null) {
+        const match = url.pathname.match(/^(?:\/api)?\/success\/([a-zA-Z0-9]+)$/)
+        if(match) {
+            state = match[1]
+        }
+    }
+
+    if(state) {
+        state = atob(state)
+        const link = document.getElementById("server-link");
+        link.setAttribute("href", `${state.i}`)
+        link.innerText = state.n;
+        link.style.display = "block";
+    }
+</script>
+
+</html>

@@ -38,7 +38,7 @@ button, input[type=submit], .abutton {
 .abutton {
     font-size: 3em;
     text-decoration: none;
-
+    text-align: center;
 }
 
 #step2 {
