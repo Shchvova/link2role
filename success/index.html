@@ -37,9 +37,8 @@
             state = match[1]
         }
     }
-
+    state = JSON.parse(atob(state))
     if(state) {
-        state = atob(state)
         const link = document.getElementById("server-link");
         link.setAttribute("href", `${state.i}`)
         link.innerText = state.n;
