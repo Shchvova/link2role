@@ -100,6 +100,32 @@ async function handleRequest(request) {
             return new Response(`Error while joining guild! ${grantResponse.text}`, {status:500})
         }
     }
+    else if(pathname === "/generate-link-api") {
+        const apiKey = url.searchParams.get('key');
+        const linkDataJson = await kvStorage.get(apiKey)
+        if(linkDataJson === null) return new Response("Api link not found. It is missing or was deleted", {status:404})
+        const data = JSON.parse(linkDataJson)
+        if(!data.api) return new Response("Code is not for API use", {status:405})
+        const guild = data.guild
+        if(!guild) return new Response("Missing `guild` argument", {status:400})
+        const role = data.role
+        if(!role) return new Response("Missing `role` argument", {status:400})
+
+        const del = btoa(crypto.getRandomValues(new Uint8Array(5))).replaceAll("=","")
+        const link = btoa(crypto.getRandomValues(new Uint8Array(6))).replaceAll("=","")
+        const linkData = {
+            del:del,
+            guild:guild,
+            role:role,
+            su: true,
+        };
+        await kvStorage.put(link, JSON.stringify(linkData));
+        return new Response("https://link2role.svoka.com/role/" + link, {
+            headers: {
+                "content-type": "text/plain",
+            },
+        });
+    }
     else if(pathname === "/generate-link") {
         const guild = url.searchParams.get("guild");
         if(!guild) return new Response("Missing `guild` argument", {status:400})
@@ -113,6 +139,7 @@ async function handleRequest(request) {
             role:role, 
         };
         if(url.searchParams.get("singleUse") === "true") linkData.su = true;
+        if(url.searchParams.get("api") === "true") linkData.api = true;
         await kvStorage.put(link, JSON.stringify(linkData));
         return new Response(JSON.stringify({
             del:del,
@@ -122,7 +149,7 @@ async function handleRequest(request) {
                 "content-type": "application/json",
             },
         });
-    } 
+    }
     else if(pathname === "/delete") {
         const formData = await request.formData();
         const del = formData.get('del')
